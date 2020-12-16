@@ -25,13 +25,18 @@ struct Card{
 
 void addPlayerCard()
 {
-  srand(time(NULL));
+  srand(time(0));
   Card newcard;
   string tempcard;
- 
-  tempcard = card[rand() % 52];
   
-    playerhand[playerhandnumber] = tempcard;
+
+  tempcard = card[rand() % 52];
+  for(int i = 0; i < 5; i++){
+    playerhand[i] = tempcard;
+   
+    break;
+  }
+  //playerhand[playerhandnumber] = tempcard;
 
   
   if ((tempcard == "Hace") || (tempcard == "Dace") || (tempcard == "Cace") || (tempcard == "Sace"))
@@ -80,13 +85,13 @@ void addPlayerCard()
 }
 void addDealerCard()
 {
-srand(time(0));
+
 
   Card newcard;
   string tempcard;
   tempcard = card[rand() % 52];
   for(int i = 0; i < 5; i++){
-    playerhand[i] = tempcard;
+    dealerhand[i] = tempcard;
    
     break;
   }
@@ -156,30 +161,44 @@ else if (dealertotalpoints > 21) {cout << "The dealer has now lost! The dealer h
 else if(dealertotalpoints && playertotalpoints > 21) {cout << "Both players went over 21!" << endl; selection = 3;}
 }
 
-void gameControl(){
+void playerhanddisplay(){
+  for (int i =0; i < playerhandnumber; i++){cout << "The cards you have are... " << playerhand[i] << endl;}
+checkwin();}
 
-do{
+void gameControl(){
 printmenu();
 cout << "\n" << endl;
-if( playertotalpoints >= 12 && playertotalpoints <= 15){cout << "The average bust out for a hand value of 12-15 is... 41%" << endl;}
-else if(playertotalpoints >= 15 && playertotalpoints <= 17){cout << "The average bust out for a hand value of 15-17 is... 63%" << endl;}
-else if(playertotalpoints >= 18 && playertotalpoints <= 21){cout << "The average bust out for a hand value of 18-21 is... 84%" << endl;}
+if( playertotalpoints >= 12 && playertotalpoints <= 15){cout << "The average bust for a hand value of 12-15 is... 41%" << endl;}
+else if(playertotalpoints >= 15 && playertotalpoints <= 17){cout << "The average bust for a hand value of 15-17 is... 63%" << endl;}
+else if(playertotalpoints >= 18 && playertotalpoints <= 21){cout << "The average bust for a hand value of 18-20 is... 84%" << endl;}
 cout << "choose wizely! " << endl;
+checkwin();
 cin >> selection;
 if(selection == 2){
 addPlayerCard();
-for (int i =0; i < playerhandnumber; i++){cout << "The cards you have are... " << playerhand[i] << endl;}
 checkwin();
-}
-else if(selection == 1) {cout << "You chose to skip! Your total card points are! " << playertotalpoints; 
 for (int i =0; i < playerhandnumber; i++){cout << "The cards you have are... " << playerhand[i] << endl;}
-checkwin();}
+}
+else if(selection == 1) {cout << "You chose to skip! Your total card points are! \n" << playertotalpoints << endl;
+checkwin();
+addDealerCard();
+checkwin();
+} 
 
-}while(selection != 3);
-cout << "Thanks for playing! " << endl;
+
 }
 
 int main() {
-gameControl();
+
+do
+{gameControl();
+
+
+
+cout << "Thanks for playing! " << endl;
+playertotalpoints = 0;
+dealertotalpoints = 0;
+}
+while(selection !=3);
 return 0;
 }
